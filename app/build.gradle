@@ -67,3 +67,45 @@ tasks.register('buildJar', Jar) {
     exclude("**/R.class")
     exclude("**/BuildConfig.class")
 }
+// ===============================
+// Spider JAR (output to /jar)
+// aligned with TVBox-jar project
+// ===============================
+
+def jarOutDir = file("${rootProject.projectDir}/jar")
+
+tasks.register('genSpiderJar', Jar) {
+    group = "spider"
+    description = "Generate spider jar to /jar directory"
+
+    // 固定 jar 名称
+    archiveFileName.set("custom_spider.jar")
+
+    // 固定输出目录
+    destinationDirectory.set(jarOutDir)
+
+    // 使用 release 编译后的 class
+    from("$buildDir/intermediates/javac/release/classes")
+
+    // 确保先编译
+    dependsOn("assembleRelease")
+}
+
+// 生成 md5（和第二个成功项目一致）
+tasks.register('genSpiderMd5') {
+    group = "spider"
+    description = "Generate md5 for spider jar"
+
+    dependsOn("genSpiderJar")
+
+    doLast {
+        def jarFile = file("${rootProject.projectDir}/jar/custom_spider.jar")
+        def md5 = java.security.MessageDigest
+                .getInstance("MD5")
+                .digest(jarFile.bytes)
+                .encodeHex()
+                .toString()
+
+        file("${jarFile.absolutePath}.md5").text = md5
+    }
+}
