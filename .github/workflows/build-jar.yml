@@ -1,4 +1,4 @@
-name: Build JAR
+name: now Build JAR
 
 on:
   push:
