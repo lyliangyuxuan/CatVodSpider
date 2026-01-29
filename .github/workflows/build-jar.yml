@@ -19,6 +19,9 @@ jobs:
           distribution: temurin
           java-version: 11
 
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
       - name: Build spider jar
         run: ./gradlew :app:genSpiderMd5
 
