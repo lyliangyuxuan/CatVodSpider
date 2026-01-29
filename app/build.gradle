@@ -56,3 +56,14 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'org.jsoup:jsoup:1.21.2'
 }
+tasks.register('buildJar', Jar) {
+    archiveBaseName = "CatVodSpider"
+    archiveVersion = "1.0.0"
+    archiveClassifier = ""
+    destinationDirectory = file("$buildDir/jar")
+
+    from android.sourceSets.main.java.srcDirs
+
+    exclude("**/R.class")
+    exclude("**/BuildConfig.class")
+}
